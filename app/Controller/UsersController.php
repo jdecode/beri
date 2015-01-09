@@ -41,6 +41,11 @@ class UsersController extends AppController {
 		);
 		$this->_deny_url($this->_deny);
 	}
+	
+	function beforeRender() {
+		parent::beforeRender();
+		$this->set('title_for_layout', BERI_DESCRIPTION);
+	}
 
 	/**
 	 * index method

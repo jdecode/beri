@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </a>
-        <a href="<?php echo $this->webroot; ?>" class="brand active white">Intranet</a>
+        <a href="<?php echo $this->webroot; ?>" class="brand active white"><?php echo BERI; ?></a>
         <div class="nav-collapse">
             <ul class="nav">
                 <?php

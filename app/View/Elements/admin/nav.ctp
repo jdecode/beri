@@ -12,7 +12,7 @@ $_controller = $this->params->params['controller'];
                     <span class="icon-bar"></span>
                 </a>
 				<?php
-				echo $this->Html->link('Intranet', array('controller' => 'users', 'action' => 'index', 'admin' => true), array('class' => 'brand'));
+				echo $this->Html->link(BERI, array('controller' => 'users', 'action' => 'index', 'admin' => true), array('class' => 'brand'));
 				?>
 				<?php
 				if (isset($user_id)) {

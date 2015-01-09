@@ -20,7 +20,7 @@ $time1 = microtime();
 <html lang="en">
     <head>
         <?php echo $this->Html->charset(); ?>
-        <title> Intranet
+        <title> <?php echo $title_for_layout; // . $this->fetch('title'); ?>
             <?php
             $_controller = $this->params->params['controller'];
             $_action = $this->params->params['action'];

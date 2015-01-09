@@ -1,5 +1,11 @@
 <?php
 
+
+define('BERI', 'B.E.R.I.');
+
+define('BERI_DESCRIPTION', 'Best Enterprise Resource planning Interface');
+
+
 define('ADMIN_LOGIN', 'admin');
 
 define('USER_LOGIN', 'login');
