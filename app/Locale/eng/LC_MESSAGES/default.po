@@ -1,0 +1,13 @@
+
+msgid "NO_RECORD_FOUND"
+msgstr "No Record Found"
+
+msgid "REGISTRATION_NOTIFICATION_SUCCESS"
+msgstr "An Email has been sent to you to proceed with registration."
+
+msgid "REGISTRATION_NOTIFICATION_FAILURE"
+msgstr "Registration failed. Please retry"
+
+msgid "REGISTRATION_NOTIFICATION_EMAIL_FAILURE"
+msgstr "We couldn't send an email to your account. Please contact admin - admin@bhaksala.com"
+

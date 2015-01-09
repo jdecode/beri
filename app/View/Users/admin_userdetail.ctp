@@ -1,0 +1,124 @@
+<div class="well row-fluid">
+	<div class="span10">
+		<h3>
+		Reporting for <?php echo $user['User']['first_name'].' '.$user['User']['last_name']; ?>
+		</h3>
+	</div>
+	<div class="content span10">
+	</div>
+	<div class="span10">
+		<?php
+			$_last_10 = 12;
+		?>
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>
+					Date
+				</th>
+				<th>
+					Day start time
+				</th>
+				<th>
+					Day end time
+				</th>
+				<th>
+					Logged in time
+				</th>
+			</tr>
+		<?php
+			$session_stop = 0;
+			$first = true;
+			$i = 0;
+			$data = '';
+
+			
+			foreach($entries as $_entry) {
+
+				$date = date('F d, Y', $_entry['Entry']['timestamp']);
+				$session_start = date('H:i', $_entry['Entry']['timestamp']);
+				if($_entry['Entry']['type'] == 1) {
+					$green_zone = mktime(9, 30, 0, date("n", $_entry['Entry']['timestamp']), date("j", $_entry['Entry']['timestamp']), date("Y", $_entry['Entry']['timestamp']));
+					$orange_zone = $green_zone + 60*15;
+					if($_entry['Entry']['timestamp'] <= $green_zone) {
+						$class = 'green';
+					}
+					if($_entry['Entry']['timestamp'] > $green_zone && $_entry['Entry']['timestamp'] <= $orange_zone) {
+						$class = 'orange';
+					}
+					if($_entry['Entry']['timestamp'] > $orange_zone ) {
+						$class = 'red';
+					}
+					
+				}
+				if($first && $_entry['Entry']['type'] == 1) {
+					$_time = time();
+					$_diff = $_time - $_entry['Entry']['timestamp'];
+					$session_hours_ = floor(($_diff)/3600);
+					$session_mins_ = floor(($_diff)/60)%60;
+					$data = "
+						<tr class='$class'>
+							<td>
+								$date
+							</td>
+							<td>
+								$session_start
+							</td>
+							<td>
+								--
+							</td>
+							<td>
+								<strong>$session_hours_ h $session_mins_ min</strong> [since last login]
+							</td>
+						</tr>
+						";
+					$first = false;
+					continue;
+				}
+				if($_entry['Entry']['type'] == 2) {
+					$_session_stop = $_entry['Entry']['timestamp'];
+				}
+				if($_entry['Entry']['type'] == 1) {
+
+					$session_stop = date('H:i', $_session_stop);
+					$diff = $_session_stop - $_entry['Entry']['timestamp'];
+					$session_hours = floor(($diff)/3600);
+					$session_mins = floor(($diff)/60)%60;
+					$_award = '';
+					if($session_hours >= 9) {
+						$_award = '<i class="iconic-o-plus" style="color:#51A351; font-size: 18px;"></i>';
+					}
+					if($session_hours > 12) {
+						//$_award = '<i class="iconic-award" style="color:#51A351; font-size: 18px;"></i><i class="iconic-o-plus" style="color:#51A351; font-size: 18px;"></i>';
+					}
+					if($session_hours < 9) {
+						$_award = '<i class=" iconic-o-minus" style="color:#BD362F;"></i>';
+					}
+					
+					//	<br />
+					//{$_entry['Entry']['timestamp']}<br /> ".GREEN_ZONE."<br />".ORANGE_ZONE."<br />$class
+					$data .= "
+						<tr>
+							<td>
+								$date | {$_entry['Entry']['id']}
+							</td>
+							<td class='$class'>
+								$session_start
+							</td>
+							<td>
+								$session_stop
+							</td>
+							<td>
+								$session_hours h $session_mins min $_award
+							</td>
+						</tr>
+						";
+					$session_stop = 0;
+				}
+				$first = false;
+			}
+			echo $data;
+		?>
+		</table>
+	</div>
+</div>
+
