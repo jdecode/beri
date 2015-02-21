@@ -317,7 +317,7 @@ class UsersController extends AppController {
 						$this->redirect('/admin/users/');
 					}
 				} else {
-					$this->Session->setFlash('Password is uncorrect. Please try again', 'flash_close', array('class' => 'alert alert-error'));
+					$this->Session->setFlash('Password is incorrect. Please try again', 'flash_close', array('class' => 'alert alert-error'));
 				}
 			} else {
 				$this->Session->setFlash('We didn\'t recognize the Email you entered. Please try again', 'flash_close', array('class' => 'alert alert-error'));
@@ -436,23 +436,27 @@ class UsersController extends AppController {
 				'recursive' => -1
 					)
 			);
-			if ($user['User']['password'] == sha1($this->request->data['User']['password'])) {
-				$this->Session->write('Web', $user);
-				$this->Session->setFlash('You are now logged in', 'flash_close', array('class' => 'alert-success'));
-				$this->redirect('/dashboard');
-				/*
-				  $_redirect = @$this->Session->read('redirect');
-				  if(trim($_redirect) != '') {
-				  $this->Session->setFlash('Welcome back!', 'flash_close', array('class' => 'alert alert-success'));
-				  $this->Session->delete('redirect');
-				  $this->redirect("$_redirect");
-				  } else {
-				  $this->Session->setFlash('You are now logged in', 'flash_close', array('class' => 'alert alert-success'));
-				  $this->redirect('/dashboard');
-				  }
-				 */
+			if($user) {
+				if ($user['User']['password'] == sha1($this->request->data['User']['password'])) {
+					$this->Session->write('Web', $user);
+					$this->Session->setFlash('You are now logged in', 'flash_close', array('class' => 'alert-success'));
+					$this->redirect('/dashboard');
+					/*
+					  $_redirect = @$this->Session->read('redirect');
+					  if(trim($_redirect) != '') {
+					  $this->Session->setFlash('Welcome back!', 'flash_close', array('class' => 'alert alert-success'));
+					  $this->Session->delete('redirect');
+					  $this->redirect("$_redirect");
+					  } else {
+					  $this->Session->setFlash('You are now logged in', 'flash_close', array('class' => 'alert alert-success'));
+					  $this->redirect('/dashboard');
+					  }
+					 */
+				} else {
+					$this->Session->setFlash('Password you entered is incorrect. Please try again', 'flash_close', array('class' => 'alert alert-error'));
+				}
 			} else {
-				$this->Session->setFlash('We didn\'t recognize the Username or Password you entered. Please try again', 'flash_close', array('class' => 'alert alert-error'));
+				$this->Session->setFlash('We didn\'t recognize the Username you entered. Please try again', 'flash_close', array('class' => 'alert alert-error'));
 			}
 		}
 	}
