@@ -20,8 +20,14 @@
                             ><?php echo $_web_user_data['first_name']; ?>&nbsp;&nbsp;<b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
+							<?php
+							if($sale_access == 'yes') {
+							?>
                             <li><?php echo $this->Html->link('Profile', array("controller"=>"users", "action"=>"user_dashboard")); ?></li>
                             <li><?php echo $this->Html->link('History', array("controller" => "users", "action" => "session_history")); ?></li>
+							<?php
+							}
+							?>
                             <li><?php echo $this->Html->link('Logout', '/logout'); ?></li>
                         </ul>
                     </li>
@@ -43,7 +49,7 @@
                     </li>
                     <?php
                 }
-                if (!empty($_web_user_data) && $_web_user_data["group_id"]) {
+                if (!empty($_web_user_data) && $_web_user_data["group_id"] && $sale_access == 'yes') {
                     ?>
                     <li class="dropdown"><a class="white font16 bold dropdown-toggle" data-toggle="dropdown">Leads&nbsp;&nbsp;<i class="caret"></i></a>
                         <ul class="dropdown-menu">
