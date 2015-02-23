@@ -186,21 +186,28 @@ class ProjectsController extends AppController {
 
 		$this->autoRender = false;
 		$this->loadModel("TasksUser");
+		$this->loadModel("SprintsTask");
 		$tasks = array();
-		//	pr($this->request->data);
 		foreach ($this->request->data["tasks"] as $val) {
 			if ($val != 0) {
 				$tasks[] = $val;
 			}
 		}
 		$saveArr = array();
-
 		foreach ($tasks as $val) {
 			$saveArr[] = array("task_id" => $val, "user_id" => $this->request->data["user"][$val][0], "hours" => 0);
 		}
+		$save_ap_arr = array();
+		foreach ($tasks as $val) {
 
-
+			$is_exist = $this->SprintsTask->find("count", array("conditions" => array("task_id" => $val, "sprint_id" => $this->request->data["Task"]["sprint_id"])));
+			if ($is_exist == 0) {
+				$save_ap_arr[] = array("task_id" => $val, "sprint_id" => $this->request->data["Task"]["sprint_id"]);
+			}
+		}
 		if ($this->TasksUser->saveAll($saveArr)) {
+			$this->SprintsTask->saveAll($save_ap_arr);
+
 			$this->Session->setFlash("Project assignment is updated", 'flash_close', array('class' => 'alert alert-info'));
 			$id = '';
 			if (!empty($this->request->data["Task"]["project"])) {

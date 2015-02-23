@@ -63,6 +63,21 @@ class Task extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	public $hasOne = array(
+		'SprintsTask' => array(
+			'className' => 'SprintsTask',
+			'foreignKey' => 'task_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
 
 
 }
