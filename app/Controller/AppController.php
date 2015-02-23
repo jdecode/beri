@@ -131,4 +131,25 @@ class AppController extends Controller {
 		return false;
 	}
 
+	function _get_random_name() {
+		return sha1(time() . microtime() . rand() . rand());
+	}
+
+	function _upload_file($source, $destination = '') {
+		if (trim($destination) == '') {
+			$destination = APP . DS . 'webroot' . DS . 'files' . DS . 'documents' . DS;
+		}
+		if (!is_array($source) || $source['error'] != 0) {
+			return false;
+		}
+		$random_name = $this->_get_random_name();
+		$_name_fragments = explode('.', $source['name']);
+		$extension = $_name_fragments[count($_name_fragments)-1];
+		$filename = $random_name . '.' . $extension;
+		if (move_uploaded_file($source['tmp_name'], $destination . $filename)) {
+			return $filename;
+		}
+		return false;
+	}
+
 }

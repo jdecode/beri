@@ -5,6 +5,7 @@ App::uses('Module', 'Model');
 App::uses('Task', 'Model');
 App::uses('Sprint', 'Model');
 App::uses('User', 'Model');
+App::uses('Document', 'Model');
 
 /**
  * Projects Controller
@@ -135,18 +136,14 @@ class ProjectsController extends AppController {
 			if (count($_modules)) {
 				$this->Task = new Task();
 				$tasks = $this->Task->find(
-					'all', array(
+						'all', array(
 					'conditions' => array(
 						'Task.module_id' => $_modules,
 						'Task.status' => 1,
 					)
-					)
+						)
 				);
 			}
-
-
-			//pr($tasks);
-
 			$this->set('tasks', $tasks);
 
 			/**
@@ -161,20 +158,34 @@ class ProjectsController extends AppController {
 			$this->set('sprints', $sprints);
 
 			/**
+			 * If any documents exist for the project, set those.
+			 */
+			$this->Document = new Document();
+			$documents = $this->Document->find(
+					'all', array(
+				'conditions' => array(
+					'document_connection' => 1,
+					'connector_link' => $id,
+				)
+					)
+			);
+			$this->set('documents', $documents);
+
+			/**
 			 * Fetch users list
 			 */
 			$this->User = new User();
 			$this->set(
-				'users', $this->User->find(
-					'list', array(
-					'fields' => array(
-						'User.id', 'User.first_name'
-					),
-					'conditions' => array(
-						'User.group_id != 1'
+					'users', $this->User->find(
+							'list', array(
+						'fields' => array(
+							'User.id', 'User.first_name'
+						),
+						'conditions' => array(
+							'User.group_id != 1'
+						)
+							)
 					)
-					)
-				)
 			);
 		} else {
 			$this->Session->setFlash('Invalid Project ID.', 'flash_close', array('class' => 'alert alert-error'));

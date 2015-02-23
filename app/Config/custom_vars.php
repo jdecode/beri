@@ -33,3 +33,12 @@ $task_statuses = array(
 
 Configure::write('task_statuses', $task_statuses);
 
+
+
+$document_connections = array(
+	1 => 'document_connection',
+		);
+
+Configure::write('document_connections', $document_connections);
+
+
