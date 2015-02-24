@@ -188,6 +188,10 @@ tr.red > td { background-color: #CC0000 !important; color: white;}
 tr.orange > td { background-color: orange !important; color: white;}
 tr.green2 > td { background-color: green !important; color: white;}
 
+tr.red a { color: white;}
+tr.orange a { color: white;}
+tr.green2 a { color: white;}
+
 td.red { background-color: #CC0000 !important; color: white;}
 td.orange { background-color: orange !important; color: white;}
 td.green2 { background-color: green !important; color: white;}
