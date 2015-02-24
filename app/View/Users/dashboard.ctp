@@ -32,92 +32,14 @@
                 } else if ($entry['Entry']['type'] == 1) {
                     echo $this->Form->input('type', array('type' => 'hidden', 'value' => '2'));
 					echo '<br />';
-					_task_list($tasks, $this->Form, $task_statuses);
+					$this->User->_task_list($tasks, $this->Form, $task_statuses);
                     echo $this->Form->button('END DAY', array('type' => 'submit', 'class' => 'btn btn-large btn-success'));
                 }
             }
             echo $this->Form->end();
 			
 			
-			function _task_list($tasks = array(), $form, $task_statuses) {
-				if(is_array($tasks) && count($tasks)) {
-					//pr($tasks);
-					?>
-					<table class="table">
-						<tr>
-							<td>&nbsp;</td>
-							<td>Task</td>
-							<td>Allocated hours</td>
-							<td>Consumed hours</td>
-							<td>Available hours</td>
-							<td>Enter hours</td>
-							<td>Status</td>
-							<td>Completed?</td>
-						</tr>
-					<?php
-					foreach ($tasks as $task) {
-						echo "<tr>";
-							echo "<td>";
-								echo '&nbsp;';
-								/*
-								echo $form->input(
-										"data[User][tasks][{$task['TasksUser']['id']}]",
-										array(
-											'type' => 'checkbox',
-											'value' => 1,
-											'label' => false
-											)
-										);
-										*/
-							echo "</td>";
-							echo "<td>";
-								echo $task['Task']['name'];
-							echo "</td>";
-							echo "<td>";
-								echo $task['Task']['hours_allocated'];
-							echo "</td>";
-							echo "<td>";
-								echo $task['TasksUser']['hours'];
-							echo "</td>";
-							echo "<td>";
-								$available_hours = ((float)$task['Task']['hours_allocated']) - ((float) $task['TasksUser']['hours']);
-								if($available_hours < 0) {
-									echo '<span class="red">'.$available_hours.'</span>';
-								}
-							echo "</td>";
-							echo "<td>";
-								echo $form->input(
-										"data[User][tasks][{$task['TasksUser']['id']}]",
-										array(
-											'div' => false,
-											'label' => false,
-											'placeholder' => 'Enter hours worked',
-											'name' => "data[User][tasks][{$task['TasksUser']['id']}]",
-										)
-									);
-							echo "</td>";
-							echo "<td>";
-								echo $task_statuses[$task['Task']['status']];
-							echo "</td>";
-							echo "<td>";
-								echo $form->input(
-										"data[User][tasks_completed][{$task['TasksUser']['id']}]",
-										array(
-											'type' => 'checkbox',
-											'value' => 1,
-											'label' => false,
-											'name' => "data[User][tasks_completed][{$task['TasksUser']['id']}]",
-											)
-										);
-							echo "</td>";
-							
-						echo "</tr>";
-					}
-					?>
-					</table>
-					<?php
-				}
-			}
+			
 			
             ?>
         </div>
@@ -154,19 +76,7 @@
 
                 $date = date('F d, Y', $_entry['Entry']['timestamp']);
                 $session_start = date('H:i', $_entry['Entry']['timestamp']);
-                if ($_entry['Entry']['type'] == 1) {
-                    $green_zone = mktime(9, 30, 0, date("n", $_entry['Entry']['timestamp']), date("j", $_entry['Entry']['timestamp']), date("Y", $_entry['Entry']['timestamp']));
-                    $orange_zone = $green_zone + 60 * 15;
-                    if ($_entry['Entry']['timestamp'] <= $green_zone) {
-                        $class = 'green';
-                    }
-                    if ($_entry['Entry']['timestamp'] > $green_zone && $_entry['Entry']['timestamp'] <= $orange_zone) {
-                        $class = 'orange';
-                    }
-                    if ($_entry['Entry']['timestamp'] > $orange_zone) {
-                        $class = 'red';
-                    }
-                }
+                $class = $this->User->getClassFromEntry($_entry);
                 if ($first && $_entry['Entry']['type'] == 1) {
                     $_time = time();
                     $_diff = $_time - $_entry['Entry']['timestamp'];
@@ -249,11 +159,15 @@
 				<td> &nbsp; Warning zone</td>
 			</tr>
 			<tr>
-				<td class="green"><i class="iconic-o-plus" style="color:#51A351; font-size: 18px;"></i>;</td>
+				<td class="green2"  style="margin-top: 2px; padding-top: 2px; border-top: 2px solid white">&nbsp; &nbsp; &nbsp;</td>
+				<td> &nbsp; On time</td>
+			</tr>
+			<tr>
+				<td class="green"><i class="iconic-o-plus" style="color:#51A351; font-size: 18px;"></i></td>
 				<td> &nbsp; Overtime</td>
 			</tr>
 			<tr>
-				<td class="green"><i class="iconic-o-minus" style="color:#BD362F; font-size: 18px;"></i>;</td>
+				<td class="green"><i class="iconic-o-minus" style="color:#BD362F; font-size: 18px;"></i></td>
 				<td> &nbsp; Early leave</td>
 			</tr>
 		</table>

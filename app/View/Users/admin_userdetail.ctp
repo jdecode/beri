@@ -36,20 +36,8 @@
 
 				$date = date('F d, Y', $_entry['Entry']['timestamp']);
 				$session_start = date('H:i', $_entry['Entry']['timestamp']);
-				if($_entry['Entry']['type'] == 1) {
-					$green_zone = mktime(9, 30, 0, date("n", $_entry['Entry']['timestamp']), date("j", $_entry['Entry']['timestamp']), date("Y", $_entry['Entry']['timestamp']));
-					$orange_zone = $green_zone + 60*15;
-					if($_entry['Entry']['timestamp'] <= $green_zone) {
-						$class = 'green';
-					}
-					if($_entry['Entry']['timestamp'] > $green_zone && $_entry['Entry']['timestamp'] <= $orange_zone) {
-						$class = 'orange';
-					}
-					if($_entry['Entry']['timestamp'] > $orange_zone ) {
-						$class = 'red';
-					}
-					
-				}
+				
+				$class = $this->User->getClassFromEntry($_entry);
 				if($first && $_entry['Entry']['type'] == 1) {
 					$_time = time();
 					$_diff = $_time - $_entry['Entry']['timestamp'];
@@ -84,13 +72,13 @@
 					$session_hours = floor(($diff)/3600);
 					$session_mins = floor(($diff)/60)%60;
 					$_award = '';
-					if($session_hours >= 9) {
+					if($session_hours >= MINIMUM_OFFICE_HOURS) {
 						$_award = '<i class="iconic-o-plus" style="color:#51A351; font-size: 18px;"></i>';
 					}
 					if($session_hours > 12) {
 						//$_award = '<i class="iconic-award" style="color:#51A351; font-size: 18px;"></i><i class="iconic-o-plus" style="color:#51A351; font-size: 18px;"></i>';
 					}
-					if($session_hours < 9) {
+					if($session_hours < MINIMUM_OFFICE_HOURS) {
 						$_award = '<i class=" iconic-o-minus" style="color:#BD362F;"></i>';
 					}
 					

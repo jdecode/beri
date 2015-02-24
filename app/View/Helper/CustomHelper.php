@@ -11,11 +11,10 @@
  * You can then use this helper from your theme's views using $custom variable.
  *
  * @category Helper
- * @package  Croogo
+ * @package  Beri
  * @version  1.0
- * @author   Fahad Ibnay Heylaal <contact@fahad19.com>
+ * @author   Arun Kumar <arun.techennova@gmail.com>
  * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
- * @link     http://www.croogo.org
  */
 App::uses('Helper', 'View');
 

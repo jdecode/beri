@@ -16,7 +16,7 @@ class UsersController extends AppController {
 	 */
 	//private $_deny = array();
 	private $_tasks = array();
-
+	
 	/**
 	 * beforeFilter method
 	 */
@@ -53,9 +53,10 @@ class UsersController extends AppController {
 	 * @return void
 	 */
 	public function admin_index() {
+		$this->helpers[] = 'User';
 		$this->layout = 'admin';
 
-		$this->User->recursive = 0;
+		$this->User->recursive = 1;
 
 
 
@@ -558,6 +559,7 @@ class UsersController extends AppController {
 	 * Front end user's dashboard
 	 */
 	function admin_userdetail($id) {
+		$this->helpers[] = 'User';
 		$this->layout = 'admin';
 		$this->Entry = new Entry();
 		$this->set('user', $this->User->read(null, $id));

@@ -1,3 +1,6 @@
+<?php
+//pr($users);
+?>
 <div class="well">
 	<?php
 	?>
@@ -13,8 +16,10 @@
 		<?php
 		if (count($users)) {
 			foreach ($users as $user):
+				$_entry['Entry'] = $user['Entry'][0];
+				$class = $this->User->getClassFromEntry($_entry);
 				?>
-				<tr>
+				<tr class="<?php echo $class; ?>">
 					<td><?php echo h($user['User']['id']); ?>&nbsp;</td>
 					<td><?php echo h($user['User']['first_name']) . ' ' . h($user['User']['last_name']); ?>&nbsp;</td>
 					<td><?php echo h($user['User']['email']); ?>&nbsp;</td>
