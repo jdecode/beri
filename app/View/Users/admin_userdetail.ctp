@@ -24,6 +24,9 @@
 				<th>
 					Logged in time
 				</th>
+				<th>
+					Comment
+				</th>
 			</tr>
 		<?php
 			$session_stop = 0;
@@ -61,7 +64,7 @@
 								<strong>$session_hours_ h $session_mins_ min</strong> [since last login]
 							</td>
 							<td>
-							<span title='User comment'  data-html='true' data-content='".$comment."' data-placement='left' data-toggle='popover' class='btn comment_pop'  data-original-title='Popover on left'>Comment</span>
+							<span title=''  data-html='true' data-content='".$comment."' data-placement='left' data-toggle='popover' class='btn comment_pop'  data-original-title=''><i class='icon-comment'></i></span>
 								</td>
 						</tr>
 						";
@@ -106,7 +109,7 @@
 								$session_hours h $session_mins min $_award
 							</td>
 							<td>
-							<span title='User comment'  data-html='true' data-content='".$comment."' data-placement='left' data-toggle='popover' class='btn comment_pop'  data-original-title='Popover on left'>Comment</span>
+							<span title=''  data-html='true' data-content='".$comment."' data-placement='left' data-toggle='popover' class='btn comment_pop'  data-original-title=''><i class='icon-comment'></i></span>
 								</td>
 						</tr>
 						";
