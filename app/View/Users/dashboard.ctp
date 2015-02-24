@@ -4,11 +4,11 @@
 <div class="well row">
     <div class="pull-left span10">
         <div class="span2">
-            Hello
+            
             <?php
-            if (isset($_web_user_id) && $_web_user_id) {
+            /*if (isset($_web_user_id) && $_web_user_id) {
                 echo $_web_user_data['first_name'];
-            }
+            }*/
             ?>
         </div>
         <div class="span2">
@@ -17,7 +17,10 @@
     </div>
     <div class="pull-left span10">
         <div class="span10">	
-            <?php
+           
+
+
+ <?php
 			
             echo $this->Form->create('User', array('controller' => 'users', 'action' => 'dashboard'));
             if (!isset($entry['Entry']['id'])) {
@@ -32,7 +35,12 @@
                 } else if ($entry['Entry']['type'] == 1) {
                     echo $this->Form->input('type', array('type' => 'hidden', 'value' => '2'));
 					echo '<br />';
+					
+					
 					$this->User->_task_list($tasks, $this->Form, $task_statuses);
+					echo $this->Form->input("Comment.comment",array("type"=>"textarea","required"=>true,"cols"=>50,"rows"=>6,"label"=>false,"placeholder"=>"Please Enter Your Comment","style"=>"width:50%;"));
+					
+					
                     echo $this->Form->button('END DAY', array('type' => 'submit', 'class' => 'btn btn-large btn-success'));
                 }
             }
@@ -42,6 +50,10 @@
 			
 			
             ?>
+
+
+
+
         </div>
     </div>
 

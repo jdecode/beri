@@ -30,6 +30,7 @@
 			$first = true;
 			$i = 0;
 			$data = '';
+			$comment = '';
 
 			
 			foreach($entries as $_entry) {
@@ -38,6 +39,8 @@
 				$session_start = date('H:i', $_entry['Entry']['timestamp']);
 				
 				$class = $this->User->getClassFromEntry($_entry);
+				//pr($_entry);
+			
 				if($first && $_entry['Entry']['type'] == 1) {
 					$_time = time();
 					$_diff = $_time - $_entry['Entry']['timestamp'];
@@ -57,6 +60,9 @@
 							<td>
 								<strong>$session_hours_ h $session_mins_ min</strong> [since last login]
 							</td>
+							<td>
+							<span title='User comment'  data-html='true' data-content='".$comment."' data-placement='left' data-toggle='popover' class='btn comment_pop'  data-original-title='Popover on left'>Comment</span>
+								</td>
 						</tr>
 						";
 					$first = false;
@@ -64,6 +70,7 @@
 				}
 				if($_entry['Entry']['type'] == 2) {
 					$_session_stop = $_entry['Entry']['timestamp'];
+					$comment=!empty($_entry["Comment"]["comment"])?$_entry["Comment"]["comment"]:"<i style=color:red>No Comment Entered</i>";
 				}
 				if($_entry['Entry']['type'] == 1) {
 
@@ -98,6 +105,9 @@
 							<td>
 								$session_hours h $session_mins min $_award
 							</td>
+							<td>
+							<span title='User comment'  data-html='true' data-content='".$comment."' data-placement='left' data-toggle='popover' class='btn comment_pop'  data-original-title='Popover on left'>Comment</span>
+								</td>
 						</tr>
 						";
 					$session_stop = 0;
@@ -109,4 +119,9 @@
 		</table>
 	</div>
 </div>
-
+<script>
+	$(document).ready(function(){
+		$('.comment_pop').popover();
+	})
+	
+	</script>

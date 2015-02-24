@@ -11,12 +11,13 @@ App::uses('TasksUser', 'Model');
  * @property User $User
  */
 class UsersController extends AppController {
+
 	/**
 	 * Stores array of deniable methods, without logging in.
 	 */
 	//private $_deny = array();
 	private $_tasks = array();
-	
+
 	/**
 	 * beforeFilter method
 	 */
@@ -41,7 +42,7 @@ class UsersController extends AppController {
 		);
 		$this->_deny_url($this->_deny);
 	}
-	
+
 	function beforeRender() {
 		parent::beforeRender();
 		$this->set('title_for_layout', BERI_DESCRIPTION);
@@ -90,11 +91,11 @@ class UsersController extends AppController {
 
 					// Get and set data
 					$_users = $this->User->find(
-							'all', array(
+						'all', array(
 						'conditions' => array(
 							'User.id' => $_selected_array
 						)
-							)
+						)
 					);
 					if (count($_users)) {
 						$data = '';
@@ -126,9 +127,9 @@ class UsersController extends AppController {
 						} else {
 							// Update status of selected rows, as per selected action
 							if (
-									$this->User->updateAll(
-											array('User.status' => $this->request->data['User']['_action']), array('User.id' => $_selected_array)
-									)) {
+								$this->User->updateAll(
+									array('User.status' => $this->request->data['User']['_action']), array('User.id' => $_selected_array)
+								)) {
 								$this->Session->setFlash('Selected rows have been updated', 'flash_close', array('class' => 'alert alert-success'));
 								$this->redirect('/admin/users/');
 							} else {
@@ -146,11 +147,11 @@ class UsersController extends AppController {
 
 					// Get and set data
 					$_users = $this->User->find(
-							'all', array(
+						'all', array(
 						'conditions' => array(
 							'User.group_id != ' . ADMIN_GROUP_ID // Admin group_id
 						)
-							)
+						)
 					);
 					if (count($_users)) {
 						$data = '';
@@ -297,13 +298,13 @@ class UsersController extends AppController {
 		$this->layout = 'admin';
 		if ($this->request->is('post')) {
 			$user = $this->User->find(
-					'first', array(
+				'first', array(
 				'conditions' => array(
 					'User.email' => $this->request->data['User']['email'],
 					'User.group_id' => ADMIN_GROUP_ID
 				),
 				'recursive' => -1
-					)
+				)
 			);
 			if ($user) {
 				if ($user['User']['password'] == sha1($this->request->data['User']['password'])) {
@@ -347,19 +348,19 @@ class UsersController extends AppController {
 
 		if ($this->request->is('post') || $this->request->is('put')) {
 			$this->request->data = Sanitize::clean(
-							$this->request->data, array(
-						'odd_spaces' => true,
-						'backslash' => true,
-						'remove_html' => true,
-						'encode' => true
-							)
+					$this->request->data, array(
+					'odd_spaces' => true,
+					'backslash' => true,
+					'remove_html' => true,
+					'encode' => true
+					)
 			);
 			$_user = $this->Session->read('Admin.User');
 			$this->User->data = $_user;
 			$this->User->validate = $this->User->change_password;
 
 			if (
-					$this->User->validates() && trim($this->request->data['User']['old_password']) != '' && trim($this->request->data['User']['new_password']) != '' && $this->request->data['User']['repeat_password'] == $this->request->data['User']['new_password'] && $this->User->data['password'] == sha1($this->request->data['User']['old_password'])
+				$this->User->validates() && trim($this->request->data['User']['old_password']) != '' && trim($this->request->data['User']['new_password']) != '' && $this->request->data['User']['repeat_password'] == $this->request->data['User']['new_password'] && $this->User->data['password'] == sha1($this->request->data['User']['old_password'])
 			) {
 				$this->User->data['password'] = sha1($this->request->data['User']['new_password']);
 				$this->request->data['User'] = $this->User->data;
@@ -388,12 +389,12 @@ class UsersController extends AppController {
 
 		if ($this->request->is('post') || $this->request->is('put')) {
 			$this->request->data = Sanitize::clean(
-							$this->request->data, array(
-						'odd_spaces' => true,
-						'backslash' => true,
-						'remove_html' => true,
-						'encode' => true
-							)
+					$this->request->data, array(
+					'odd_spaces' => true,
+					'backslash' => true,
+					'remove_html' => true,
+					'encode' => true
+					)
 			);
 			$this->User->data = $this->request->data;
 			if ($this->User->validates()) {
@@ -429,15 +430,15 @@ class UsersController extends AppController {
 		$this->layout = 'web';
 		if ($this->request->is('post')) {
 			$user = $this->User->find(
-					'first', array(
+				'first', array(
 				'conditions' => array(
 					'User.email' => $this->request->data['User']['username'],
 					'User.group_id != ' . ADMIN_GROUP_ID // General user or Editor User
 				),
 				'recursive' => -1
-					)
+				)
 			);
-			if($user) {
+			if ($user) {
 				if ($user['User']['password'] == sha1($this->request->data['User']['password'])) {
 					$this->Session->write('Web', $user);
 					$this->Session->setFlash('You are now logged in', 'flash_close', array('class' => 'alert-success'));
@@ -508,12 +509,12 @@ class UsersController extends AppController {
 	function _set_last_entry() {
 
 		$_last_entry = $this->Entry->find(
-				'first', array(
+			'first', array(
 			'conditions' => array(
 				'Entry.user_id' => $this->_web_user_id
 			),
 			'order' => 'Entry.id DESC'
-				)
+			)
 		);
 		$this->set('entry', $_last_entry);
 	}
@@ -521,13 +522,13 @@ class UsersController extends AppController {
 	function _set_last_10_entries() {
 
 		$_l10_entries = $this->Entry->find(
-				'all', array(
+			'all', array(
 			'conditions' => array(
 				'Entry.user_id' => $this->_web_user_id
 			),
 			'order' => 'Entry.id DESC',
 			'limit' => 70
-				)
+			)
 		);
 		$this->set('entries', $_l10_entries);
 	}
@@ -536,21 +537,21 @@ class UsersController extends AppController {
 
 		$this->TasksUser->recursive = is_numeric($recursive) ? $recursive : 0;
 		$_tasks = $this->TasksUser->find(
-				'all', array(
+			'all', array(
 			'conditions' => array(
 				'TasksUser.user_id' => $this->_web_user_id,
 				'TasksUser.status' => 1,
 			),
 			'order' => 'TasksUser.id DESC',
-				)
+			)
 		);
-		if($return) {
+		if ($return) {
 			return $_tasks;
 		} else {
 			$this->set('tasks', $_tasks);
 		}
 	}
-	
+
 	function _get_tasks($return = true, $recursive = -1) {
 		return $this->_set_tasks($return, $recursive);
 	}
@@ -563,20 +564,37 @@ class UsersController extends AppController {
 		$this->layout = 'admin';
 		$this->Entry = new Entry();
 		$this->set('user', $this->User->read(null, $id));
+	
+		
 		$_last_entry = $this->Entry->find(
-				'first', array(
+			'first', array(
 			'conditions' => array(
 				'Entry.user_id' => $id
 			),
 			'order' => 'Entry.id DESC'
-				)
+			)
 		);
+		
+		
+		$this->Entry->bindModel(
+			 array(
+                 'hasOne'=>array(
+                     'Comment'=>array(
+                      'className' => 'Comment',
+                      'foreignKey' => 'type_connection',
+                      //'conditions' => array('Comment.type_connection' => 'Event.id')
+                    )        
+               )
+            )
+			);
 		$_l10_entries = $this->Entry->find('all', array(
 			'conditions' => array(
 				'Entry.user_id' => $id
 			),
-			'order' => 'Entry.id DESC', 'limit' => 65 )
+			'order' => 'Entry.id DESC', 'limit' => 65)
 		);
+		
+		
 		$this->set('entry', $_last_entry);
 		$this->set('entries', $_l10_entries);
 	}
@@ -603,7 +621,7 @@ class UsersController extends AppController {
 				)
 			)
 			, "fields" => array("LeadView.*", "Lead.title")
-				)
+			)
 		);
 		$setLeadData = array();
 		if (!empty($view_data)) {
@@ -616,8 +634,8 @@ class UsersController extends AppController {
 
 	function end_day() {
 		$this->Entry = new Entry();
-		//pr($this->request->data);
-		if ($this->request->is('post') || $this->request->is('put')) {
+
+		if (($this->request->is('post') || $this->request->is('put')) && (!empty($this->request->data["Comment"]["comment"]) || $this->request->data["User"]["type"] == 1 )) {
 
 			$_event = array();
 			$_event['user_id'] = (int) $this->_web_user_id;
@@ -625,9 +643,14 @@ class UsersController extends AppController {
 			$_event['type'] = $this->request->data['User']['type'];
 			$this->Entry->create();
 			if ($this->Entry->save($_event)) {
+
 				if ($_event['type'] == 1) {
 					$this->Session->setFlash('You are now logged in at office.', 'flash_close', array('class' => 'alert alert-success'));
 				} else if ($_event['type'] == 2) {
+					$_last_event_id = $this->Entry->getLastInsertId();
+					$save_comment = array("type_connection" => $_last_event_id, "type" => 1, "comment" => $this->request->data["Comment"]["comment"]);
+					$this->loadModel('Comment');
+					$this->Comment->save($save_comment);
 					$this->Session->setFlash('You are now logged out of office.', 'flash_close', array('class' => 'alert alert-success'));
 				}
 				return true;
@@ -635,6 +658,9 @@ class UsersController extends AppController {
 				$this->Session->setFlash('Your session could not be initiated.', 'flash_close', array('class' => 'alert alert-error'));
 				return false;
 			}
+		} else {
+			$this->Session->setFlash('Comment is required.', 'flash_close', array('class' => 'alert alert-error'));
+			$this->redirect('/dashboard');
 		}
 		//die;
 		//$this->Session->setFlash('Your hours have been logged.', 'flash_close', array('class' => 'alert alert-success'));
@@ -643,20 +669,20 @@ class UsersController extends AppController {
 
 	function _pick_ids_from_task_array($tasks = array()) {
 		$_new_tasks = array();
-		if(is_array($tasks) && count($tasks)) {
-			foreach($tasks as $task) {
+		if (is_array($tasks) && count($tasks)) {
+			foreach ($tasks as $task) {
 				$_new_tasks[$task['TasksUser']['id']] = $task['TasksUser']['id'];
 			}
 		}
 		return $_new_tasks;
 	}
-	
+
 	function _save_tasks() {
 		$this->_tasks = $this->_get_tasks(true, -1);
 		$_tasks = $this->_pick_ids_from_task_array($this->_tasks);
 		if (($this->request->is('post') || $this->request->is('put')) && isset($this->request->data['User']['tasks']) && is_array($this->request->data['User']['tasks'])) {
 			$diff = array_diff_key($this->request->data['User']['tasks'], $_tasks);
-			if(count($diff) == 0) {
+			if (count($diff) == 0) {
 				$this->_update_tasks($this->request->data['User']['tasks'], $this->request->data['User']['tasks_completed']);
 			} else {
 				$this->Session->setFlash('Fiddling attempt identified', 'flash_close', array('class' => 'alert alert-error'));
@@ -664,15 +690,14 @@ class UsersController extends AppController {
 			}
 		}
 	}
-	
 
 	function _update_tasks($_tasks_entered = array(), $_tasks_statuses = array()) {
 
 		$_tasks = $this->_tasks;
-		foreach($_tasks as $_task) {
-			if(isset($_tasks_entered[$_task['TasksUser']['id']]) && trim($_tasks_entered[$_task['TasksUser']['id']]) != '' && is_numeric($_tasks_entered[$_task['TasksUser']['id']])) {
+		foreach ($_tasks as $_task) {
+			if (isset($_tasks_entered[$_task['TasksUser']['id']]) && trim($_tasks_entered[$_task['TasksUser']['id']]) != '' && is_numeric($_tasks_entered[$_task['TasksUser']['id']])) {
 				$_task['TasksUser']['hours'] += (int) $_tasks_entered[$_task['TasksUser']['id']];
-				if($_tasks_statuses[$_task['TasksUser']['id']]) {
+				if ($_tasks_statuses[$_task['TasksUser']['id']]) {
 					$_task['TasksUser']['status'] = 3; // Completed
 				}
 				$this->TasksUser->save($_task);

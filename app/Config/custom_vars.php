@@ -36,9 +36,14 @@ Configure::write('task_statuses', $task_statuses);
 
 
 $document_connections = array(
-	1 => 'document_connection',
+	1 => 'project_id',
+		);
+
+$comment_connections = array(
+	1 => 'entry_id',
 		);
 
 Configure::write('document_connections', $document_connections);
+Configure::write('comment_connections', $comment_connections);
 
 
