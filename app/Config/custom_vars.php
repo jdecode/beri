@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Project Statuses
+ */
 $project_statuses = array(
 	0 => 'Inception',
 	1 => 'Post-Sales',
@@ -18,6 +21,9 @@ $project_statuses = array(
 Configure::write('project_statuses', $project_statuses);
 
 
+/**
+ * Task statuses
+ */
 $task_statuses = array(
 	0 => 'Inactive',
 	1 => 'Active',
@@ -33,17 +39,31 @@ $task_statuses = array(
 
 Configure::write('task_statuses', $task_statuses);
 
-
-
+/**
+ * Document types
+ */
 $document_connections = array(
 	1 => 'project_id',
 		);
 
+Configure::write('document_connections', $document_connections);
+
+/**
+ * Comment types
+ */
 $comment_connections = array(
 	1 => 'entry_id',
 		);
 
-Configure::write('document_connections', $document_connections);
 Configure::write('comment_connections', $comment_connections);
+
+/**
+ * Thread types
+ */
+$thread_types = array(
+	1 => 'document_id',
+		);
+
+Configure::write('thread_types', $thread_types);
 
 

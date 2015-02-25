@@ -37,8 +37,13 @@ class AppController extends Controller {
 		//'DebugKit.Toolbar',
 		'Session'
 	);
+
 	public $_web_user_id = 0;
 	public $_web_user_data = array();
+
+	public $_admin_user_id = 0;
+	public $_admin_user_data = array();
+
 	public $_deny = array();
 	public $task_statuses = array();
 
@@ -120,6 +125,11 @@ class AppController extends Controller {
 		$_web_user_data = $this->Session->read('Web.User');
 		$this->_web_user_id = $_web_user_id;
 		$this->_web_user_data = $_web_user_data;
+
+		$_admin_user_id = $this->Session->read('Admin.User.id');
+		$_admin_user_data = $this->Session->read('Admin.User');
+		$this->_admin_user_id = $_admin_user_id;
+		$this->_admin_user_data = $_admin_user_data;
 
 		$this->task_statuses = Configure::read('task_statuses');
 	}

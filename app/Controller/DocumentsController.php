@@ -1,6 +1,8 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('Thread', 'Model');
+App::uses('Project', 'Model');
 
 /**
  * Documents Controller
@@ -57,6 +59,55 @@ class DocumentsController extends AppController {
 	public function admin_index() {
 		$this->Document->recursive = 0;
 		$this->set('documents', $this->paginate());
+	}
+
+	/**
+	 * thread method
+	 *
+	 * @return void
+	 */
+	public function admin_thread($id = null, $project_id = null) {
+		$this->layout = 'admin';
+
+		$this->Thread = new Thread();
+		$this->Project = new Project();
+
+		$this->Document->id = $id;
+		if (!$this->Document->exists()) {
+			$this->Session->setFlash('Invalid document link.', 'flash_close', array('class' => 'alert alert-error'));
+			$this->redirect('/admin');
+		} else {
+			$_document = $this->Document->read(null, $id);
+			$this->set('document', $_document);
+		}
+		$this->Project->id = $project_id;
+		if (!$this->Project->exists()) {
+			$this->Session->setFlash('Invalid Project link.', 'flash_close', array('class' => 'alert alert-error'));
+			$this->redirect('/admin');
+		}
+		
+		if($this->request->is('post')) {
+			$thread = array(
+				'Thread' => array(
+					'user_id' => $this->_admin_user_id,
+					'status' => 1,
+					'type' => 1,
+					'type_link' => $id,
+					'document_added' => 0,
+					'post' => $this->request->data['Comment']['comment'],
+					)
+				);
+			if($this->Thread->save($thread)) {
+				$this->Session->setFlash('Comment saved.', 'flash_close', array('class' => 'alert alert-info'));
+			} else {
+				$this->Session->setFlash('Comment could not be saved.', 'flash_close', array('class' => 'alert alert-error'));
+			}
+			$this->redirect("/admin/documents/thread/$id/$project_id");
+		}
+		
+		$_threads = $this->Thread->find('all', array('conditions' => array('Thread.type_link' => $id, 'type' => 1)));
+		$this->set('threads', $_threads);
+		$this->set('project_id', $project_id);
 	}
 
 	/**
