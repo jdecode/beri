@@ -6,6 +6,7 @@
 				<th>ID</th>
 				<th>Name</th>
 				<th>File</th>
+				<th>Thread</th>
 			</tr>
 			<?php
 			if (isset($documents) && count($documents)) {
@@ -35,6 +36,19 @@
 								<div class="span12">
 									<?php
 									echo $this->Html->link('Download', '/files/documents/'.$document['Document']['filename']);
+									?>
+								</div>
+							</div>
+						</td>
+						<td>
+							<div class="row-fluid">
+								<div class="span12">
+									<?php
+									echo $this->Html->link(
+											'View Thread',
+											'/admin/documents/thread/'.$document['Document']['id'].'/'.$id,
+											array('class' => 'btn btn-primary')
+											);
 									?>
 								</div>
 							</div>
