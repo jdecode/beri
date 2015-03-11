@@ -97,7 +97,7 @@
 					$data .= "
 						<tr>
 							<td>
-								$date | {$_entry['Entry']['id']}
+								$date
 							</td>
 							<td class='$class'>
 								$session_start
