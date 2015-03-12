@@ -68,7 +68,7 @@ class AppController extends Controller {
 			if (in_array($action, $this->_deny['admin'])) {
 				if (!$this->_admin_auth_check()) {
 					$this->Session->write('redirect', "/" . $this->params->url);
-					$this->redirect('/admin');
+					$this->redirect('/'.ADMIN_LOGIN);
 				}
 			}
 		}
@@ -76,8 +76,8 @@ class AppController extends Controller {
 		if (!empty($this->_deny['web'])) {
 			if (in_array($action, $this->_deny['web'])) {
 				if (!$this->_web_auth_check()) {
-					//$this->Session->write('redirect', "/".$this->params->url);
-					$this->redirect('/login');
+					$this->Session->write('redirect', "/".$this->params->url);
+					$this->redirect('/'.USER_LOGIN);
 				}
 			}
 		}
