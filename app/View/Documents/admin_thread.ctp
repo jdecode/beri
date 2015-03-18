@@ -13,7 +13,16 @@
 		</tr>
 		<tr>
 			<td>Name</td>
-			<td><?php echo $document['Document']['name'] . '<br />' . $this->Html->link('Download', '/files/documents/' . $document['Document']['filename'], array('class' => 'btn btn-primary')); ?></td>
+			<td><?php
+			echo $document['Document']['name'] . '<br />' .
+				 $this->Html->link(
+						 'Download',
+						 '/files/documents/' . $document['Document']['filename'],
+						 array(
+							 'class' => 'btn btn-primary',
+							 'download' => $document['Document']['name'].'-'.$document['Document']['filename'],
+							 )
+						 ); ?></td>
 		</tr>
 		<tr>
 			<td>File type</td>

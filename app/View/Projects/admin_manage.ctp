@@ -1,7 +1,12 @@
+<span class="project-code">
+<?php
+	echo $project['Project']['code'];
+?>
+</span>
 <br>
 <br>
 <div class="row-fluid">
-	<div class="span11 offset1">
+	<div class="span11">
 		<div class="tabbable">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#sprints" data-toggle="tab">Sprints</a></li>
