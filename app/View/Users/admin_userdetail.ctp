@@ -6,7 +6,7 @@
 	</div>
 	<div class="content span10">
 	</div>
-	<div class="span10">
+	<div class="span10 col-md-10">
 		<?php
 			$_last_10 = 12;
 		?>
@@ -49,6 +49,7 @@
 					$_diff = $_time - $_entry['Entry']['timestamp'];
 					$session_hours_ = floor(($_diff)/3600);
 					$session_mins_ = floor(($_diff)/60)%60;
+					$button = '<span class="btn btn-success">Logout</span>';
 					$data = "
 						<tr class='$class'>
 							<td>
@@ -58,7 +59,7 @@
 								$session_start
 							</td>
 							<td>
-								--
+								$button
 							</td>
 							<td>
 								<strong>$session_hours_ h $session_mins_ min</strong> [since last login]
@@ -97,7 +98,7 @@
 					$data .= "
 						<tr>
 							<td>
-								$date | {$_entry['Entry']['id']}
+								$date
 							</td>
 							<td class='$class'>
 								$session_start

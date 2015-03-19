@@ -218,3 +218,7 @@ td.green2 { background-color: green !important; color: white;}
 .text-small {
     font-size: 10px;
 }
+
+.project-code {
+	font-size: 30px; font-weight: bold;
+}

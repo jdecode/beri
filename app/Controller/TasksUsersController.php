@@ -1,5 +1,7 @@
 <?php
+
 App::uses('AppController', 'Controller');
+
 /**
  * TasksUsers Controller
  *
@@ -7,23 +9,43 @@ App::uses('AppController', 'Controller');
  */
 class TasksUsersController extends AppController {
 
-/**
- * index method
- *
- * @return void
- */
+	/**
+	 * beforeFilter method
+	 */
+	function beforeFilter() {
+		parent::beforeFilter();
+		// Place methods that require login in the following array
+		$this->_deny = array(
+			'admin' => array(
+				'admin_index',
+				'admin_add',
+				'admin_edit',
+				'admin_delete',
+				'admin_view',
+			),
+			'web' => array(
+			)
+		);
+		$this->_deny_url($this->_deny);
+	}
+
+	/**
+	 * index method
+	 *
+	 * @return void
+	 */
 	public function index() {
 		$this->TasksUser->recursive = 0;
 		$this->set('tasksUsers', $this->paginate());
 	}
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * view method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function view($id = null) {
 		$this->TasksUser->id = $id;
 		if (!$this->TasksUser->exists()) {
@@ -32,11 +54,11 @@ class TasksUsersController extends AppController {
 		$this->set('tasksUser', $this->TasksUser->read(null, $id));
 	}
 
-/**
- * add method
- *
- * @return void
- */
+	/**
+	 * add method
+	 *
+	 * @return void
+	 */
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->TasksUser->create();
@@ -52,13 +74,13 @@ class TasksUsersController extends AppController {
 		$this->set(compact('tasks', 'users'));
 	}
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * edit method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function edit($id = null) {
 		$this->TasksUser->id = $id;
 		if (!$this->TasksUser->exists()) {
@@ -79,14 +101,14 @@ class TasksUsersController extends AppController {
 		$this->set(compact('tasks', 'users'));
 	}
 
-/**
- * delete method
- *
- * @throws MethodNotAllowedException
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * delete method
+	 *
+	 * @throws MethodNotAllowedException
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
@@ -103,23 +125,23 @@ class TasksUsersController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 
-/**
- * admin_index method
- *
- * @return void
- */
+	/**
+	 * admin_index method
+	 *
+	 * @return void
+	 */
 	public function admin_index() {
 		$this->TasksUser->recursive = 0;
 		$this->set('tasksUsers', $this->paginate());
 	}
 
-/**
- * admin_view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * admin_view method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function admin_view($id = null) {
 		$this->TasksUser->id = $id;
 		if (!$this->TasksUser->exists()) {
@@ -128,11 +150,11 @@ class TasksUsersController extends AppController {
 		$this->set('tasksUser', $this->TasksUser->read(null, $id));
 	}
 
-/**
- * admin_add method
- *
- * @return void
- */
+	/**
+	 * admin_add method
+	 *
+	 * @return void
+	 */
 	public function admin_add() {
 		if ($this->request->is('post')) {
 			$this->TasksUser->create();
@@ -148,13 +170,13 @@ class TasksUsersController extends AppController {
 		$this->set(compact('tasks', 'users'));
 	}
 
-/**
- * admin_edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * admin_edit method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function admin_edit($id = null) {
 		$this->TasksUser->id = $id;
 		if (!$this->TasksUser->exists()) {
@@ -175,14 +197,14 @@ class TasksUsersController extends AppController {
 		$this->set(compact('tasks', 'users'));
 	}
 
-/**
- * admin_delete method
- *
- * @throws MethodNotAllowedException
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * admin_delete method
+	 *
+	 * @throws MethodNotAllowedException
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function admin_delete($id = null) {
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
@@ -198,4 +220,5 @@ class TasksUsersController extends AppController {
 		$this->Session->setFlash(__('Tasks user was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
+
 }

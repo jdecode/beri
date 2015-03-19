@@ -31,22 +31,7 @@ class ClientsController extends AppController {
 			'web' => array(
 			)
 		);
-		$action = $this->params->params['action'];
-		// If method requires login then redirect to login page[if logged out] with referer URL, and to dashboard otherwise
-		if (in_array($action, $this->_deny['admin'])) {
-			$this->layout = 'admin';
-			if (!$this->_admin_auth_check()) {
-				$this->Session->write('redirect', "/" . $this->params->url);
-				$this->redirect('/' . ADMIN_LOGIN);
-			}
-		}
-		// If method requires login then redirect to login page[if logged out] with referer URL, and to homepage otherwise
-		if (in_array($action, $this->_deny['web'])) {
-			if (!$this->_web_auth_check()) {
-				//$this->Session->write('redirect', "/".$this->params->url);
-				$this->redirect('/' . USER_LOGIN);
-			}
-		}
+		$this->_deny_url($this->_deny);
 	}
 
 	/**

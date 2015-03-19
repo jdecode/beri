@@ -1,5 +1,7 @@
 <?php
+
 App::uses('AppController', 'Controller');
+
 /**
  * Sprints Controller
  *
@@ -7,23 +9,45 @@ App::uses('AppController', 'Controller');
  */
 class SprintsController extends AppController {
 
-/**
- * index method
- *
- * @return void
- */
+	/**
+	 * beforeFilter method
+	 */
+	function beforeFilter() {
+		parent::beforeFilter();
+		// Place methods that require login in the following array
+		$this->_deny = array(
+			'admin' => array(
+				'admin_index',
+				'admin_add',
+				'admin_edit',
+				'admin_delete',
+				'admin_view',
+			),
+			'web' => array(
+				'logout',
+				'dashboard',
+			)
+		);
+		$this->_deny_url($this->_deny);
+	}
+
+	/**
+	 * index method
+	 *
+	 * @return void
+	 */
 	public function index() {
 		$this->Sprint->recursive = 0;
 		$this->set('sprints', $this->paginate());
 	}
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * view method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function view($id = null) {
 		$this->Sprint->id = $id;
 		if (!$this->Sprint->exists()) {
@@ -32,11 +56,11 @@ class SprintsController extends AppController {
 		$this->set('sprint', $this->Sprint->read(null, $id));
 	}
 
-/**
- * add method
- *
- * @return void
- */
+	/**
+	 * add method
+	 *
+	 * @return void
+	 */
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->Sprint->create();
@@ -51,13 +75,13 @@ class SprintsController extends AppController {
 		$this->set(compact('projects'));
 	}
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * edit method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function edit($id = null) {
 		$this->Sprint->id = $id;
 		if (!$this->Sprint->exists()) {
@@ -77,14 +101,14 @@ class SprintsController extends AppController {
 		$this->set(compact('projects'));
 	}
 
-/**
- * delete method
- *
- * @throws MethodNotAllowedException
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * delete method
+	 *
+	 * @throws MethodNotAllowedException
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
@@ -101,23 +125,23 @@ class SprintsController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 
-/**
- * admin_index method
- *
- * @return void
- */
+	/**
+	 * admin_index method
+	 *
+	 * @return void
+	 */
 	public function admin_index() {
 		$this->Sprint->recursive = 0;
 		$this->set('sprints', $this->paginate());
 	}
 
-/**
- * admin_view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * admin_view method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function admin_view($id = null) {
 		$this->Sprint->id = $id;
 		if (!$this->Sprint->exists()) {
@@ -126,11 +150,11 @@ class SprintsController extends AppController {
 		$this->set('sprint', $this->Sprint->read(null, $id));
 	}
 
-/**
- * admin_add method
- *
- * @return void
- */
+	/**
+	 * admin_add method
+	 *
+	 * @return void
+	 */
 	public function admin_add() {
 		if ($this->request->is('post')) {
 			$this->Sprint->create();
@@ -145,13 +169,13 @@ class SprintsController extends AppController {
 		$this->set(compact('projects'));
 	}
 
-/**
- * admin_edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * admin_edit method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function admin_edit($id = null) {
 		$this->Sprint->id = $id;
 		if (!$this->Sprint->exists()) {
@@ -171,14 +195,14 @@ class SprintsController extends AppController {
 		$this->set(compact('projects'));
 	}
 
-/**
- * admin_delete method
- *
- * @throws MethodNotAllowedException
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * admin_delete method
+	 *
+	 * @throws MethodNotAllowedException
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function admin_delete($id = null) {
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
@@ -194,4 +218,5 @@ class SprintsController extends AppController {
 		$this->Session->setFlash(__('Sprint was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
+
 }

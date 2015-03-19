@@ -1,5 +1,7 @@
 <?php
+
 App::uses('AppController', 'Controller');
+
 /**
  * Modules Controller
  *
@@ -7,23 +9,43 @@ App::uses('AppController', 'Controller');
  */
 class ModulesController extends AppController {
 
-/**
- * index method
- *
- * @return void
- */
+	/**
+	 * beforeFilter method
+	 */
+	function beforeFilter() {
+		parent::beforeFilter();
+		// Place methods that require login in the following array
+		$this->_deny = array(
+			'admin' => array(
+				'admin_index',
+				'admin_add',
+				'admin_edit',
+				'admin_delete',
+				'admin_view',
+			),
+			'web' => array(
+			)
+		);
+		$this->_deny_url($this->_deny);
+	}
+
+	/**
+	 * index method
+	 *
+	 * @return void
+	 */
 	public function index() {
 		$this->Module->recursive = 0;
 		$this->set('modules', $this->paginate());
 	}
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * view method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function view($id = null) {
 		$this->Module->id = $id;
 		if (!$this->Module->exists()) {
@@ -32,11 +54,11 @@ class ModulesController extends AppController {
 		$this->set('module', $this->Module->read(null, $id));
 	}
 
-/**
- * add method
- *
- * @return void
- */
+	/**
+	 * add method
+	 *
+	 * @return void
+	 */
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->Module->create();
@@ -51,13 +73,13 @@ class ModulesController extends AppController {
 		$this->set(compact('sprints'));
 	}
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * edit method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function edit($id = null) {
 		$this->Module->id = $id;
 		if (!$this->Module->exists()) {
@@ -77,14 +99,14 @@ class ModulesController extends AppController {
 		$this->set(compact('sprints'));
 	}
 
-/**
- * delete method
- *
- * @throws MethodNotAllowedException
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * delete method
+	 *
+	 * @throws MethodNotAllowedException
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
@@ -101,23 +123,23 @@ class ModulesController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 
-/**
- * admin_index method
- *
- * @return void
- */
+	/**
+	 * admin_index method
+	 *
+	 * @return void
+	 */
 	public function admin_index() {
 		$this->Module->recursive = 0;
 		$this->set('modules', $this->paginate());
 	}
 
-/**
- * admin_view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * admin_view method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function admin_view($id = null) {
 		$this->Module->id = $id;
 		if (!$this->Module->exists()) {
@@ -126,11 +148,11 @@ class ModulesController extends AppController {
 		$this->set('module', $this->Module->read(null, $id));
 	}
 
-/**
- * admin_add method
- *
- * @return void
- */
+	/**
+	 * admin_add method
+	 *
+	 * @return void
+	 */
 	public function admin_add() {
 		if ($this->request->is('post')) {
 			$this->Module->create();
@@ -145,13 +167,13 @@ class ModulesController extends AppController {
 		$this->set(compact('sprints'));
 	}
 
-/**
- * admin_edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * admin_edit method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function admin_edit($id = null) {
 		$this->Module->id = $id;
 		if (!$this->Module->exists()) {
@@ -171,14 +193,14 @@ class ModulesController extends AppController {
 		$this->set(compact('sprints'));
 	}
 
-/**
- * admin_delete method
- *
- * @throws MethodNotAllowedException
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * admin_delete method
+	 *
+	 * @throws MethodNotAllowedException
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function admin_delete($id = null) {
 		if (!$this->request->is('post')) {
 			throw new MethodNotAllowedException();
@@ -194,4 +216,5 @@ class ModulesController extends AppController {
 		$this->Session->setFlash(__('Module was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
+
 }

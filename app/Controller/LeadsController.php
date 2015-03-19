@@ -23,7 +23,6 @@ class LeadsController extends AppController {
 	 */
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->layout = 'web';
 		$this->_deny = array(
 			'web' => array(
 				'index',
