@@ -95,6 +95,55 @@ class DocumentsController extends AppController {
 		$this->set('threads', $_threads);
 		$this->set('project_id', $project_id);
 	}
+	
+	/**
+	 * thread method
+	 *
+	 * @return void
+	 */
+	public function admin_notethread($id = null, $project_id = null) {
+		$this->layout = 'admin';
+
+		$this->Thread = new Thread();
+		$this->Project = new Project();
+
+		$this->Document->id = $id;
+		if (!$this->Document->exists()) {
+			$this->Session->setFlash('Invalid document link.', 'flash_close', array('class' => 'alert alert-error'));
+			$this->redirect('/admin');
+		} else {
+			$_document = $this->Document->read(null, $id);
+			$this->set('document', $_document);
+		}
+		$this->Project->id = $project_id;
+		if (!$this->Project->exists()) {
+			$this->Session->setFlash('Invalid Project link.', 'flash_close', array('class' => 'alert alert-error'));
+			$this->redirect('/admin');
+		}
+		
+		if($this->request->is('post')) {
+			$thread = array(
+				'Thread' => array(
+					'user_id' => $this->_admin_user_id,
+					'status' => 1,
+					'type' => 1,
+					'type_link' => $id,
+					'document_added' => 0,
+					'post' => $this->request->data['Comment']['comment'],
+					)
+				);
+			if($this->Thread->save($thread)) {
+				$this->Session->setFlash('Comment saved.', 'flash_close', array('class' => 'alert alert-info'));
+			} else {
+				$this->Session->setFlash('Comment could not be saved.', 'flash_close', array('class' => 'alert alert-error'));
+			}
+			$this->redirect("/admin/documents/notethread/$id/$project_id");
+		}
+		
+		$_threads = $this->Thread->find('all', array('conditions' => array('Thread.type_link' => $id, 'type' => 1)));
+		$this->set('threads', $_threads);
+		$this->set('project_id', $project_id);
+	}
 
 	/**
 	 * view method
@@ -139,6 +188,31 @@ class DocumentsController extends AppController {
 				$this->Session->setFlash('The document has been saved', 'flash_close', array('class' => 'alert alert-info'));
 			} else {
 				$this->Session->setFlash('The document could not be saved. Please, try again.', 'flash_close', array('class' => 'alert alert-error'));
+			}
+			$this->redirect('/admin/projects/manage/' . $this->request->data['Document']['project_id']);
+		}
+	}
+	/**
+	 * add method for note
+	 *
+	 * @return void
+	 */
+	public function admin_note_add() {
+		if ($this->request->is('post')) {
+			
+			$document = array(
+				'Document' => array(
+					'status' => 1,
+					'document_connection' => 2,
+					'connector_link' => $this->request->data['Document']['project_id'],
+					'name' => $this->request->data['Document']['name'],
+				)
+			);
+			$this->Document->create();
+			if ($this->Document->save($document)) {
+				$this->Session->setFlash('The note has been saved', 'flash_close', array('class' => 'alert alert-info'));
+			} else {
+				$this->Session->setFlash('The note could not be saved. Please, try again.', 'flash_close', array('class' => 'alert alert-error'));
 			}
 			$this->redirect('/admin/projects/manage/' . $this->request->data['Document']['project_id']);
 		}

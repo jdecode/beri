@@ -19,11 +19,14 @@
 					case 'add_sprint'	:
 						echo $this->Element('admin/projects/add_sprint');
 						break;
-					case 'add_task_to_sprint'	:
+					case 'add_task_to_sprint':
 						echo $this->Element('admin/projects/add_task_to_sprint');
 						break;
 					case 'add_document'	:
 						echo $this->Element('admin/projects/add_document');
+						break;
+					case 'add_note'	:
+						echo $this->Element('admin/projects/add_note');
 						break;
 					default				:
 						echo 'Modal Body not defined';
