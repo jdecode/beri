@@ -10,7 +10,7 @@
 		<div class="tabbable">
 			<ul class="nav nav-tabs">
 				<!--<li class="active"><a href="#sprints" data-toggle="tab">Sprints</a></li>-->
-				<li class=""><a href="#tasks" data-toggle="tab">Tasks</a></li>
+				<li class="active"><a href="#tasks" data-toggle="tab">Tasks</a></li>
 				<li class=""><a href="#documents" data-toggle="tab">Documents</a></li>
 				<li class=""><a href="#notes" data-toggle="tab">Notes</a></li>
 			</ul>

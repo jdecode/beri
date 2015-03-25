@@ -136,12 +136,12 @@ class ProjectsController extends AppController {
 			if (count($_modules)) {
 				$this->Task = new Task();
 				$tasks = $this->Task->find(
-						'all', array(
+					'all', array(
 					'conditions' => array(
 						'Task.module_id' => $_modules,
 						'Task.status' => 1,
 					)
-						)
+					)
 				);
 			}
 			$this->set('tasks', $tasks);
@@ -162,21 +162,21 @@ class ProjectsController extends AppController {
 			 */
 			$this->Document = new Document();
 			$documents = $this->Document->find(
-					'all', array(
+				'all', array(
 				'conditions' => array(
 					'document_connection' => 1,
 					'connector_link' => $id,
 				)
-					)
+				)
 			);
 			$this->set('documents', $documents);
 			$notes = $this->Document->find(
-					'all', array(
+				'all', array(
 				'conditions' => array(
 					'document_connection' => 2,
 					'connector_link' => $id,
 				)
-					)
+				)
 			);
 			$this->set('notes', $notes);
 
@@ -185,16 +185,16 @@ class ProjectsController extends AppController {
 			 */
 			$this->User = new User();
 			$this->set(
-					'users', $this->User->find(
-							'list', array(
-						'fields' => array(
-							'User.id', 'User.first_name'
-						),
-						'conditions' => array(
-							'User.group_id != 1'
-						)
-							)
+				'users', $this->User->find(
+					'list', array(
+					'fields' => array(
+						'User.id', 'User.first_name'
+					),
+					'conditions' => array(
+						'User.group_id != 1'
 					)
+					)
+				)
 			);
 		} else {
 			$this->Session->setFlash('Invalid Project ID.', 'flash_close', array('class' => 'alert alert-error'));
@@ -208,33 +208,49 @@ class ProjectsController extends AppController {
 		$this->loadModel("TasksUser");
 		$this->loadModel("SprintTask");
 		$tasks = array();
-		foreach ($this->request->data["tasks"] as $val) {
-			if ($val != 0) {
-				$tasks[] = $val;
-			}
-		}
-		$saveArr = array();
-		foreach ($tasks as $val) {
-			$saveArr[] = array("task_id" => $val, "user_id" => $this->request->data["user"][$val][0], "hours" => 0);
-		}
-		$save_ap_arr = array();
-		foreach ($tasks as $val) {
+		if (!empty($this->request->data["assign_to"]) && isset($this->request->data["assign_to"])) {
 
-			$is_exist = $this->SprintTask->find("count", array("conditions" => array("task_id" => $val, "sprint_id" => $this->request->data["Task"]["sprint_id"])));
-			if ($is_exist == 0) {
-				$save_ap_arr[] = array("task_id" => $val, "sprint_id" => $this->request->data["Task"]["sprint_id"]);
-			}
-		}
-		if ($this->TasksUser->saveAll($saveArr)) {
-			$this->SprintTask->saveAll($save_ap_arr);
+			$pre_ts_ct = $this->TasksUser->find('count', array('conditions' => array("TasksUser.task_id" => $this->request->data["taskid"], "TasksUser.user_id" => $this->request->data["assign_to"])));
+			if ($pre_ts_ct == 0) {
+				$pre_ts_u = $this->TasksUser->find('list', array("conditions" => array("TasksUser.task_id" => $this->request->data["taskid"]), "recursive" => -1, "fields" => array("TasksUser.id", "TasksUser.task_id")));
+				$up_array = array();
+				if (!empty($pre_ts_u)) {
+					foreach ($pre_ts_u as $k => $v) {
+						$up_array[] = array("id" => $k, "status" => 0);
+					}
+				}
 
-			$this->Session->setFlash("Project assignment is updated", 'flash_close', array('class' => 'alert alert-info'));
-			$id = '';
-			if (!empty($this->request->data["Task"]["project"])) {
-				$id = $this->request->data["Task"]["project"];
+				if (!empty($up_array)) {
+					$this->TasksUser->saveAll($up_array);
+				}
+
+				$saveArr[] = array("task_id" => $this->request->data["taskid"], "user_id" => $this->request->data["assign_to"], "hours" => 0);
+
+//		$save_ap_arr = array();
+//		foreach ($tasks as $val) {
+//
+//			$is_exist = $this->SprintTask->find("count", array("conditions" => array("task_id" => $val, "sprint_id" => $this->request->data["Task"]["sprint_id"])));
+//			if ($is_exist == 0) {
+//				$save_ap_arr[] = array("task_id" => $val, "sprint_id" => $this->request->data["Task"]["sprint_id"]);
+//			}
+//		}
+				if ($this->TasksUser->saveAll($saveArr)) {
+					//$this->SprintTask->saveAll($save_ap_arr);
+					$this->Session->setFlash("Task assignment is updated", 'flash_close', array('class' => 'alert alert-info'));
+				}
+			} else {
+				$this->Session->setFlash("Already allocated", 'flash_close', array('class' => 'alert alert-info'));
 			}
-			$this->redirect(array("controller" => "projects", "action" => "manage", $id));
+		} else {
+			$this->Session->setFlash("Please select user", 'flash_close', array('class' => 'alert alert-info'));
 		}
+		$id = '';
+		if (!empty($this->request->data["project_id"])) {
+			$id = $this->request->data["project_id"];
+		}
+
+
+		$this->redirect(array("controller" => "projects", "action" => "manage", $id, "admin" => true));
 	}
 
 	/**
