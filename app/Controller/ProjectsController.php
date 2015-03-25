@@ -170,6 +170,15 @@ class ProjectsController extends AppController {
 					)
 			);
 			$this->set('documents', $documents);
+			$notes = $this->Document->find(
+					'all', array(
+				'conditions' => array(
+					'document_connection' => 2,
+					'connector_link' => $id,
+				)
+					)
+			);
+			$this->set('notes', $notes);
 
 			/**
 			 * Fetch users list
@@ -197,7 +206,7 @@ class ProjectsController extends AppController {
 
 		$this->autoRender = false;
 		$this->loadModel("TasksUser");
-		$this->loadModel("SprintsTask");
+		$this->loadModel("SprintTask");
 		$tasks = array();
 		foreach ($this->request->data["tasks"] as $val) {
 			if ($val != 0) {
@@ -211,13 +220,13 @@ class ProjectsController extends AppController {
 		$save_ap_arr = array();
 		foreach ($tasks as $val) {
 
-			$is_exist = $this->SprintsTask->find("count", array("conditions" => array("task_id" => $val, "sprint_id" => $this->request->data["Task"]["sprint_id"])));
+			$is_exist = $this->SprintTask->find("count", array("conditions" => array("task_id" => $val, "sprint_id" => $this->request->data["Task"]["sprint_id"])));
 			if ($is_exist == 0) {
 				$save_ap_arr[] = array("task_id" => $val, "sprint_id" => $this->request->data["Task"]["sprint_id"]);
 			}
 		}
 		if ($this->TasksUser->saveAll($saveArr)) {
-			$this->SprintsTask->saveAll($save_ap_arr);
+			$this->SprintTask->saveAll($save_ap_arr);
 
 			$this->Session->setFlash("Project assignment is updated", 'flash_close', array('class' => 'alert alert-info'));
 			$id = '';

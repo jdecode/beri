@@ -62,6 +62,7 @@ Configure::write('comment_connections', $comment_connections);
  */
 $thread_types = array(
 	1 => 'document_id',
+	2=> 'note_id'
 		);
 
 Configure::write('thread_types', $thread_types);

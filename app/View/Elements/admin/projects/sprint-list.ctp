@@ -4,7 +4,7 @@
 		<?php
 		echo $this->Element(
 			'admin/modal', array(
-			'model_name' => 'AddTaskToSprint',
+			'model_name' => 'AddTaskToSprint1',
 			'modal_body' => 'add_task_to_sprint',
 			)
 		);
@@ -28,7 +28,7 @@
 										?>
 									</span>
 									<span class="pull-right">
-										<a href="#adminModalAddTaskToSprint" class="give_s_id" data-toggle="modal" data-val="<?php echo $sprint["id"] ?>">Add Tasks</a>
+										<a href="#adminModalAddTaskToSprint1" class="give_s_id" data-toggle="modal" data-val="<?php echo $sprint["id"] ?>">Add Tasks</a>
 										<?php
 										//echo $this->Html->link('Add Task(s) to Sprint', array('controller' => 'sprints', 'action' => 'manage', $sprint['id']), array('class' => ''));
 										?>

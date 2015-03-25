@@ -24,10 +24,18 @@
 						<?php
 						echo $this->Form->input("project", array("type" => "hidden", "value" => $tasks[0]['Module']['project_id']));
 						echo $this->Form->input("sprint_id", array("type" => "hidden", "value" => '', 'id' => 'ren_sprint_id'));
-						//pr($tasks);
-						foreach ($tasks as $k => $task) {
+						
+							foreach ($tasks as $k => $task) {
+							
+							if(!empty($task["TasksUser"])){
+								$un="line-through";
+								$sel="disabled";
+							}else{
+								$un="";
+								$sel="";
+							}
 							?>
-							<tr id="tr<?php echo $task['Task']['id']; ?>">
+						<tr id="tr<?php echo $task['Task']['id']; ?>" style=" text-decoration:<?php echo $un; ?>">
 								<td ><?php
 									echo $task['Module']['name'];
 									?></td>
@@ -70,7 +78,9 @@
 										'options' => $users,
 										'name' => "user[{$task['Task']['id']}][]",
 										'id' => 'user_task_' . $task['Task']['id'],
-										'default'=>$default
+										'default'=>$default,
+										'empty'=>"Select",
+										$sel=>$sel	
 										)
 									);
 									?></td>
